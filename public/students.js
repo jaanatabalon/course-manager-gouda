@@ -1,5 +1,5 @@
 import { students } from "./data/all-data.js";
-'use strict';
+// 'use strict'; -- No need for 'use strict' when importing JS as a module. It's implicitly applied.
 (function () {
 
     function studentNames() {
@@ -10,10 +10,19 @@ import { students } from "./data/all-data.js";
     }
     studentNames();
 
+    function printStudentDetails(details, index) { 
+        return details[index];
+    }
 
-    
+    function addStudentEventListeners() {
+        const listItems = document.querySelectorAll('#studentList>li');
+
+        for (let i = 0; i < listItems.length; i++) {
+            listItems[i].addEventListener('click', () =>
+                console.log(printStudentDetails(students, i))
+            );
+        }
+    }
+    addStudentEventListeners()
 })()
-// console.log(students);
-
-// console.log("hi");
 
