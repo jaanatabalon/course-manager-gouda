@@ -1,28 +1,37 @@
-import { students } from "./data/all-data.js";
-// 'use strict'; -- No need for 'use strict' when importing JS as a module. It's implicitly applied.
-(function () {
+import { students } from './data/all-data.js';
 
-    function studentNames() {
-        const studentList = document.querySelector('#studentList');
-        for (let student of students) {
-            studentList.insertAdjacentHTML("beforeend", `<li>${student["firstName"]}` + " " + `${student["lastName"]}</li>`);
-        }
-    }
-    studentNames();
+let leftSide = document.getElementById('left-side');
+let leftSideList = document.createElement('ul');
 
-    function printStudentDetails(details, index) { 
-        return details[index];
-    }
+/** @see {https://developer.mozilla.org/en-US/docs/Web/API/Element/classList} */
+leftSideList.classList.add('list-unstyled');
 
-    function addStudentEventListeners() {
-        const listItems = document.querySelectorAll('#studentList>li');
+// Direct style assignment
+leftSideList.style.cursor = 'pointer';
 
-        for (let i = 0; i < listItems.length; i++) {
-            listItems[i].addEventListener('click', () =>
-                console.log(printStudentDetails(students, i))
-            );
-        }
-    }
-    addStudentEventListeners()
-})()
+for (let student of students) {
+  // console.log(student.firstName + ' ' + student.lastName);
+  // console.log(`${student.firstName} ${student.lastName}`);
+  leftSideList.insertAdjacentHTML(
+    'beforeend',
+    `<li id="${student.id}">${student.firstName} ${student.lastName}</li>`
+  );
+}
 
+// Event delegation!
+leftSideList.addEventListener('click', (event) => {
+  let studentId = event.target.id;
+  let student = students.find((s) => s.id === Number(studentId));
+  // let student = students.find((s) => s.id == studentId);
+  // console.log('You clicked on:', student);
+
+  let rightSide = document.getElementById('right-side');
+  let studentDetails = document.createElement('div');
+  studentDetails.insertAdjacentHTML(
+    'beforeend',
+    `<p>${student.firstName} ${student.lastName} lives in ${student.city}, ${student.province}`
+  );
+  rightSide.replaceChildren(studentDetails);
+});
+
+leftSide.append(leftSideList);
